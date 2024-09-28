@@ -31,7 +31,20 @@ function App() {
       console.log("Empty")
     }
   }
-
+  const takeDataFromServer = async () => {
+      console.log("Before sending")
+      const response = await fetch("/api/dido",{
+          method: "GET"
+      })
+      if(!response.ok){
+          console.log("Error sending")
+          return;
+      }
+      console.log("Sending")
+      let responseDataFromServer = await response.json();
+      console.log(responseDataFromServer)
+      setResponseData(responseDataFromServer.text)
+  }
 
 
 
@@ -45,6 +58,14 @@ function App() {
       <button type="submit">Submit</button>
       <span>{info.text}</span><br />
     </form>
+    <form onSubmit={(e) => {
+                e.preventDefault();
+                takeDataFromServer();
+            }}>
+              <input type="text" name="text" />
+                <button type="submit">Принять с сервера</button>
+                {responseData}
+          </form>
 
     </div>
   );
